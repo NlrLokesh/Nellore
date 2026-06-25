@@ -1,0 +1,2910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Nellore Basket - Premium Grocery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;900&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --gold: #d4af37; --gold-light: #f7d774; --gold-dark: #a67c00;
+    --gold-shine: #fff2b3; --black: #050505; --black-mid: #0f0f0f;
+    --black-card: #161616; --black-border: #2f2f2f;
+    --white: #ffffff; --white-dim: #d6d6d6; --red-warn: #ff4d4d;
+  }
+  body { font-family: 'Montserrat', sans-serif; background: var(--black); color: var(--white); min-height: 100vh; overflow-x: hidden; -webkit-overflow-scrolling: touch; -webkit-tap-highlight-color: transparent; }
+
+  /* HEADER */
+  header { background: var(--black-mid); border-bottom: 1px solid var(--gold-dark); padding: 22px 20px 18px; text-align: center; position: sticky; top: 0; z-index: 1000; overflow: hidden; -webkit-transform: translateZ(0); transform: translateZ(0); }
+  header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--gold), var(--gold-light), var(--gold), transparent); }
+  header::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--gold-dark), transparent); }
+  .header-tag { font-size: 9px; font-weight: 600; letter-spacing: 4px; color: var(--gold); text-transform: uppercase; margin-bottom: 6px; }
+  .header-title { font-family: 'Playfair Display', serif; font-size: 34px; font-weight: 900; letter-spacing: 2px; background: linear-gradient(135deg, var(--gold-dark) 0%, var(--gold-light) 40%, var(--gold) 60%, var(--gold-shine) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .header-sub { font-size: 10px; color: var(--white-dim); letter-spacing: 3px; margin-top: 5px; font-weight: 300; text-transform: uppercase; }
+
+  .container { max-width: 500px; margin: 0 auto; padding: 20px 15px 30px; }
+
+  .section-title { display: flex; align-items: center; gap: 10px; font-size: 9px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin: 24px 0 12px; }
+  .section-title::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--gold-dark), transparent); }
+
+  /* CUSTOMER CARD */
+  .customer-card { background: var(--black-card); border: 1px solid var(--black-border); border-radius: 14px; padding: 18px; position: relative; overflow: hidden; }
+  .customer-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--gold-dark), transparent); }
+  .input-group { position: relative; }
+  .input-group input { width: 100%; padding: 12px 14px 12px 42px; background: var(--black-mid); border: 1px solid var(--black-border); border-radius: 8px; color: var(--white); font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 500; outline: none; transition: border 0.25s, box-shadow 0.25s; -webkit-appearance: none; appearance: none; }
+  .input-group input::placeholder { color: #cccccc; font-weight: 400; }
+  .input-group input:focus { border-color: var(--gold-dark); box-shadow: 0 0 0 3px rgba(212,175,55,0.08); }
+  .input-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 14px; pointer-events: none; }
+
+  /* TABS */
+  .tabs-wrapper { display: flex; border-radius: 12px; overflow: hidden; border: 1px solid var(--black-border); margin-bottom: 16px; }
+  .tab-btn { flex: 1; padding: 10px 4px 8px; background: var(--black-card); color: #e0e0e0; border: none; font-family: 'Montserrat', sans-serif; font-size: 8px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: all 0.25s; position: relative; outline: none; -webkit-appearance: none; appearance: none; border-right: 1px solid var(--black-border); }
+  .tab-btn:last-child { border-right: none; }
+  .tab-btn.active { background: #1c1800; color: var(--gold-light); }
+  .tab-btn.active::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--gold-dark), var(--gold-light), var(--gold-dark)); }
+  .tab-btn.locked { opacity: 0.45; cursor: pointer; filter: grayscale(0.6); }
+  .tab-btn.locked .tab-lock-icon { display: inline-block; }
+  .tab-lock-icon { display: none; font-size: 9px; margin-left: 2px; }
+  .tab-btn .tab-icon { font-size: 13px; display: block; margin-bottom: 3px; }
+  .tab-btn .tab-num { font-size: 7px; display: block; color: #666; margin-top: 2px; letter-spacing: 0.5px; }
+  .tab-btn.active .tab-num { color: var(--gold-dark); }
+  .tab-btn.locked .tab-num { color: #444; }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* LOCKED BANNER */
+  .locked-banner { display: none; background: #1a0f00; border: 1px solid #3a2800; border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; text-align: center; }
+  .locked-banner .lb-icon { font-size: 22px; display: block; margin-bottom: 6px; }
+  .locked-banner .lb-title { font-family: 'Playfair Display', serif; font-size: 14px; color: var(--gold-dark); font-weight: 700; margin-bottom: 4px; }
+  .locked-banner .lb-sub { font-size: 10px; color: #666; letter-spacing: 0.5px; line-height: 1.6; }
+  .locked-banner .lb-sub span { color: var(--gold-dark); font-weight: 700; }
+  .tab-panel.locked-view .locked-banner { display: block; }
+
+  .item-lock-overlay { display: none; position: absolute; inset: 0; border-radius: 14px; background: rgba(5,5,5,0.55); z-index: 5; align-items: center; justify-content: center; pointer-events: none; }
+  .tab-panel.locked-view .item-lock-overlay { display: flex; }
+
+  /* ITEM CARD */
+  .item { display: flex; align-items: center; background: var(--black-card); border: 1px solid var(--black-border); border-radius: 14px; padding: 14px; margin-bottom: 10px; transition: border-color 0.3s ease, background-color 0.3s ease; position: relative; overflow: hidden; cursor: default; user-select: none; -webkit-user-select: none; -webkit-transform: translateZ(0); transform: translateZ(0); }
+  .item::before { content: ''; position: absolute; inset: 0; border-radius: 14px; background: linear-gradient(135deg, rgba(212,175,55,0.05), transparent 60%); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+  .item.active { border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold-dark), 0 8px 30px rgba(212,175,55,0.18); background: #1c1800; }
+  .item.active::before { opacity: 1; }
+  .item.error { border-color: var(--red-warn) !important; box-shadow: 0 0 0 1px rgba(255,77,77,0.4), 0 4px 20px rgba(255,77,77,0.12) !important; animation: shake 0.35s ease; }
+  @keyframes shake { 0%,100% { transform: translateX(0) translateZ(0); } 20% { transform: translateX(-6px) translateZ(0); } 40% { transform: translateX(6px) translateZ(0); } 60% { transform: translateX(-4px) translateZ(0); } 80% { transform: translateX(4px) translateZ(0); } }
+
+  .check-badge { position: absolute; top: 10px; right: 10px; width: 22px; height: 22px; background: linear-gradient(135deg, var(--gold-dark), var(--gold-light)); border-radius: 50%; font-size: 11px; color: var(--black); display: flex; align-items: center; justify-content: center; font-weight: 900; opacity: 0; transform: scale(0.5) translateZ(0); transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1); pointer-events: none; z-index: 6; }
+  .item.active .check-badge { opacity: 1; transform: scale(1) translateZ(0); }
+
+  .item img { width: 74px; height: 74px; object-fit: cover; border-radius: 10px; flex-shrink: 0; border: 1px solid #222; transition: border-color 0.3s; pointer-events: none; aspect-ratio: 1 / 1; }
+  .item.active img { border-color: var(--gold-dark); }
+
+  .details { flex: 1; margin-left: 13px; }
+  .item-name { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; color: #ffffff; transition: color 0.3s; }
+  .item.active .item-name { color: var(--gold-light); }
+  .item-sub { font-size: 9px; letter-spacing: 2px; color: #b0b0b0; text-transform: uppercase; margin-top: 3px; font-weight: 600; transition: color 0.3s; }
+  .item.active .item-sub { color: var(--gold-dark); }
+  .item-price { font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 600; color: var(--gold); margin-top: 7px; letter-spacing: 0.3px; }
+  .item-price .rupee { font-size: 13px; font-weight: 700; }
+  .item-price .amount { font-size: 15px; font-weight: 700; }
+  .item-price .per-kg { font-size: 11px; color: #666; font-weight: 400; margin-left: 2px; }
+  .on-demand-tag { font-size: 11px; color: #888; font-weight: 600; letter-spacing: 1px; }
+
+  .badge { display: inline-block; background: linear-gradient(135deg, var(--gold-dark), var(--gold)); color: var(--black); font-size: 7px; font-weight: 800; padding: 2px 7px; border-radius: 20px; letter-spacing: 1.5px; text-transform: uppercase; margin-left: 6px; vertical-align: middle; font-family: 'Montserrat', sans-serif; }
+
+  /* QTY */
+  .qty-wrapper { display: flex; flex-direction: column; align-items: center; gap: 5px; margin-right: 30px; position: relative; z-index: 6; }
+  .qty-label { font-size: 8px; letter-spacing: 1.5px; color: var(--gold-dark); text-transform: uppercase; font-weight: 600; transition: color 0.3s; }
+  .item.active .qty-label { color: var(--gold); }
+  select.qty-select { padding: 9px 28px 9px 12px; border-radius: 8px; border: 1px solid var(--gold-dark); background: var(--black-mid); color: #888; font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; outline: none; transition: all 0.3s; min-width: 80px; -webkit-appearance: none; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23a67c00' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; pointer-events: auto; }
+  .item.active select.qty-select { border-color: var(--gold); color: var(--gold-light); background-color: #1a1500; box-shadow: 0 0 0 1px var(--gold-dark), 0 3px 12px rgba(212,175,55,0.18); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23d4af37' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); }
+  .item.error select.qty-select { border-color: var(--red-warn) !important; box-shadow: 0 0 0 1px rgba(255,77,77,0.5) !important; }
+  .tab-panel.locked-view select.qty-select { pointer-events: none; opacity: 0.35; cursor: not-allowed; }
+
+  /* UNLOCK PROGRESS */
+  .unlock-progress-wrap { background: var(--black-card); border: 1px solid var(--black-border); border-radius: 12px; padding: 14px 16px; margin-bottom: 16px; position: relative; overflow: hidden; }
+  .unlock-progress-wrap::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--gold-dark), transparent); }
+  .up-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .up-label { font-size: 9px; letter-spacing: 2px; font-weight: 700; text-transform: uppercase; color: var(--gold-dark); }
+  .up-count { font-size: 12px; font-weight: 700; color: var(--gold-light); font-family: 'Montserrat', sans-serif; }
+  .up-bar-bg { height: 5px; background: #1e1e1e; border-radius: 5px; overflow: hidden; }
+  .up-bar-fill { height: 100%; background: linear-gradient(90deg, var(--gold-dark), var(--gold-light)); border-radius: 5px; transition: width 0.5s ease; width: 0%; }
+  .up-msg { font-size: 10px; color: #777; margin-top: 7px; letter-spacing: 0.4px; line-height: 1.5; }
+  .up-msg.met { color: var(--gold); }
+  .up-msg .em { color: var(--gold-dark); font-weight: 700; }
+
+  /* TOAST */
+  .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-80px) translateZ(0); background: #1e0000; border: 1px solid var(--red-warn); color: var(--red-warn); font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.5px; padding: 12px 22px; border-radius: 10px; box-shadow: 0 6px 24px rgba(255,77,77,0.25); z-index: 9999; transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s; white-space: nowrap; opacity: 0; pointer-events: none; -webkit-transform: translateX(-50%) translateY(-80px) translateZ(0); }
+  .toast.show { transform: translateX(-50%) translateY(0) translateZ(0); -webkit-transform: translateX(-50%) translateY(0) translateZ(0); opacity: 1; }
+  .toast.info { background: #001a0a; border-color: var(--gold-dark); color: var(--gold-light); box-shadow: 0 6px 24px rgba(212,175,55,0.2); }
+
+  /* SUMMARY */
+  .summary-card { background: var(--black-card); border: 1px solid var(--black-border); border-radius: 14px; padding: 18px; position: relative; overflow: hidden; }
+  .summary-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--gold-dark), transparent); }
+  .summary-customer { display: flex; align-items: center; gap: 10px; padding-bottom: 12px; margin-bottom: 4px; border-bottom: 1px solid #222; }
+  .cust-icon { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, var(--gold-dark), var(--gold)); display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+  .cust-info { display: flex; flex-direction: column; }
+  .cust-label { font-size: 8px; letter-spacing: 2px; color: var(--gold-dark); text-transform: uppercase; font-weight: 700; }
+  .cust-name { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; color: var(--gold-light); margin-top: 1px; line-height: 1.2; }
+  .summary-section-label { font-size: 8px; letter-spacing: 2px; color: var(--gold-dark); text-transform: uppercase; font-weight: 700; margin: 10px 0 4px; padding-top: 8px; border-top: 1px solid #222; }
+  .summary-section-label:first-of-type { border-top: none; margin-top: 4px; }
+  .summary-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #1e1e1e; font-size: 13px; }
+  .summary-row:last-of-type { border-bottom: none; }
+  .s-name { color: var(--white); font-weight: 500; }
+  .s-qty { color: #bbbbbb; font-size: 11px; font-weight: 600; }
+  .s-price { color: var(--gold); font-weight: 700; font-size: 13px; }
+  .summary-total { display: flex; justify-content: space-between; align-items: center; padding-top: 14px; margin-top: 10px; border-top: 1px solid var(--gold-dark); }
+  .t-label { font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700; color: var(--white-dim); letter-spacing: 1.5px; text-transform: uppercase; }
+  .t-amount { font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: 700; background: linear-gradient(135deg, var(--gold-dark), var(--gold-light), var(--gold-shine)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .summary-empty { text-align: center; padding: 8px 0; color: #999; font-size: 12px; letter-spacing: 1px; font-style: italic; }
+
+  /* WHATSAPP BTN */
+  .btn-whatsapp { width: 100%; padding: 16px; margin-top: 16px; background: linear-gradient(135deg, #0d6e2f, #25D366); color: white; border: none; border-radius: 12px; font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 20px rgba(37,211,102,0.2), inset 0 1px 0 rgba(255,255,255,0.1); transition: transform 0.25s, box-shadow 0.25s; position: relative; overflow: hidden; -webkit-appearance: none; appearance: none; }
+  .btn-whatsapp:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(37,211,102,0.3); }
+  .btn-whatsapp:active { transform: scale(0.98); }
+  .btn-whatsapp:disabled { opacity: 0.7; cursor: not-allowed; }
+
+  .footer-note { text-align: center; font-size: 9px; color: #2e2e2e; letter-spacing: 2px; margin-top: 14px; text-transform: uppercase; padding-bottom: 10px; }
+
+  /* PRICE CHIPS */
+  .price-chips { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+  .price-chip { background: #1a1200; border: 1px solid #2a1f00; border-radius: 6px; padding: 3px 8px; font-size: 10px; color: #888; font-weight: 600; }
+  .price-chip span { color: var(--gold); }
+
+  /* POPUP */
+  .popup-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.82); z-index: 9998; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+  .popup-overlay.show { opacity: 1; pointer-events: all; }
+  .popup-box { background: var(--black-card); border: 1px solid var(--gold-dark); border-radius: 20px; padding: 28px 24px 24px; max-width: 340px; width: 100%; position: relative; overflow: hidden; transform: scale(0.9) translateY(20px); transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1); text-align: center; }
+  .popup-overlay.show .popup-box { transform: scale(1) translateY(0); }
+  .popup-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--gold), var(--gold-light), var(--gold), transparent); }
+  .popup-icon { font-size: 42px; margin-bottom: 12px; display: block; line-height: 1; }
+  .popup-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--gold-light); margin-bottom: 8px; line-height: 1.3; }
+  .popup-subtitle { font-size: 12px; color: #888; letter-spacing: 0.5px; line-height: 1.6; margin-bottom: 24px; }
+  .popup-subtitle span { color: var(--gold-dark); font-weight: 600; }
+  .popup-buttons { display: flex; gap: 12px; }
+  .popup-btn { flex: 1; padding: 14px 10px; border: none; border-radius: 12px; font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 1px; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; -webkit-appearance: none; appearance: none; display: flex; flex-direction: column; align-items: center; gap: 5px; }
+  .popup-btn:active { transform: scale(0.96); }
+  .popup-btn .btn-emoji { font-size: 22px; }
+  .popup-btn-yes { background: linear-gradient(135deg, var(--gold-dark), var(--gold)); color: var(--black); box-shadow: 0 4px 16px rgba(212,175,55,0.25); }
+  .popup-btn-no { background: var(--black-mid); color: var(--white-dim); border: 1px solid var(--black-border); }
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+
+<div class="popup-overlay" id="locationPopup">
+  <div class="popup-box">
+    <span class="popup-icon">&#127968;</span>
+    <div class="popup-title">Are you at Home?</div>
+    <div class="popup-subtitle">We will <span>share your location</span> with the order so we can deliver right to your door.</div>
+    <div class="popup-buttons">
+      <button class="popup-btn popup-btn-yes" onclick="handleLocationChoice(true)"><span class="btn-emoji">&#9989;</span>Yes, I'm Home</button>
+      <button class="popup-btn popup-btn-no" onclick="handleLocationChoice(false)"><span class="btn-emoji">&#128694;</span>No, I'm Not</button>
+    </div>
+  </div>
+</div>
+
+<header>
+  <div class="header-tag">&#10022; Available In Nellore City &#10022;</div>
+  <div class="header-title">Nellore Basket</div>
+  <div class="header-sub">Premium Grocery &middot; Farm to Home</div>
+</header>
+
+<div class="container">
+
+  <div class="section-title">&#10022; Your Details</div>
+  <div class="customer-card">
+    <div class="input-group" style="margin-bottom:10px;">
+      <span class="input-icon">&#128100;</span>
+      <input type="text" id="customerName" placeholder="Full Name" autocomplete="name" autocorrect="off" autocapitalize="words" spellcheck="false" oninput="updateSummary()"/>
+    </div>
+    <div class="input-group">
+      <span class="input-icon">&#128222;</span>
+      <input type="tel" id="customerPhone" placeholder="Phone Number (10 digits)" maxlength="10" autocomplete="tel" inputmode="numeric" pattern="[0-9]*" oninput="filterPhone(this); updateSummary();"/>
+    </div>
+  </div>
+
+  <div class="section-title">&#10022; Select Items</div>
+
+  <div class="unlock-progress-wrap" id="unlockProgressWrap">
+    <div class="up-top">
+      <span class="up-label">&#127807; List 1 Progress</span>
+      <span class="up-count" id="upCount">0 / 10 kg</span>
+    </div>
+    <div class="up-bar-bg"><div class="up-bar-fill" id="upBarFill"></div></div>
+    <div class="up-msg" id="upMsg">Order <span class="em">10 kg or more</span> from List 1 to unlock Lists 2, 3 &amp; 4</div>
+  </div>
+
+  <div class="tabs-wrapper">
+    <button class="tab-btn active" id="tab-list1" onclick="switchTab('list1')">
+      <span class="tab-icon">&#127807;</span>List 1<span class="tab-num">Dry Groceries</span>
+    </button>
+    <button class="tab-btn locked" id="tab-list2" onclick="switchTab('list2')">
+      <span class="tab-icon">&#127981;</span>List 2<span class="tab-lock-icon">&#128274;</span><span class="tab-num">Branded Packs</span>
+    </button>
+    <button class="tab-btn locked" id="tab-list3" onclick="switchTab('list3')">
+      <span class="tab-icon">&#129659;</span>List 3<span class="tab-lock-icon">&#128274;</span><span class="tab-num">Oils &amp; Onions</span>
+    </button>
+    <button class="tab-btn locked" id="tab-list4" onclick="switchTab('list4')">
+      <span class="tab-icon">&#127798;</span>List 4<span class="tab-lock-icon">&#128274;</span><span class="tab-num">Spices</span>
+    </button>
+  </div>
+
+  <!-- LIST 1 -->
+  <div class="tab-panel active" id="panel-list1">
+    <div class="item" id="l1-1">
+      <div class="check-badge">&#10003;</div>
+      <img src="kandipappu.webp" loading="lazy" decoding="async" width="74" height="74" alt="Kandipappu">
+      <div class="details">
+        <div class="item-name">Kandipappu <span class="badge">Popular</span></div>
+        <div class="item-sub">Toor Dal</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">135</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-1')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-2">
+      <div class="check-badge">&#10003;</div>
+      <img src="minapappu.webp" loading="lazy" decoding="async" width="74" height="74" alt="Minapappu">
+      <div class="details">
+        <div class="item-name">Minapappu <span class="badge">Best</span></div>
+        <div class="item-sub">Urad Dal</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">120</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-2')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-3">
+      <div class="check-badge">&#10003;</div>
+      <img src="peanut.webp" loading="lazy" decoding="async" width="74" height="74" alt="Verusenaga Pappu">
+      <div class="details">
+        <div class="item-name">Verusenaga Pappu</div>
+        <div class="item-sub">Groundnuts / Peanuts</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">150</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-3')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-4">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Sugar">
+      <div class="details">
+        <div class="item-name">Sugar</div>
+        <div class="item-sub">Chakkera</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">54</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-4')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-5">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Idly Ravva">
+      <div class="details">
+        <div class="item-name">Idly Ravva</div>
+        <div class="item-sub">Semolina for Idly</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">45</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-5')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-6">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Upma Ravva">
+      <div class="details">
+        <div class="item-name">Upma Ravva</div>
+        <div class="item-sub">Coarse Semolina</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">54</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-6')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-7">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Tella Gedda">
+      <div class="details">
+        <div class="item-name">Tella Gedda</div>
+        <div class="item-sub">Garlic</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">140</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-7')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-8">
+      <div class="check-badge">&#10003;</div>
+      <img src="chinthap.webp" loading="lazy" decoding="async" width="74" height="74" alt="Chintapandu">
+      <div class="details">
+        <div class="item-name">Chintapandu</div>
+        <div class="item-sub">Tamarind</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">170</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-8')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-9">
+      <div class="check-badge">&#10003;</div>
+      <img src="pesalapappu.webp" loading="lazy" decoding="async" width="74" height="74" alt="Pesara Pappu">
+      <div class="details">
+        <div class="item-name">Pesara Pappu</div>
+        <div class="item-sub">Moong Dal</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">112</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-9')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-10">
+      <div class="check-badge">&#10003;</div>
+      <img src="pachis.webp" loading="lazy" decoding="async" width="74" height="74" alt="Pachi Senaga Pappu">
+      <div class="details">
+        <div class="item-name">Pachi Senaga Pappu</div>
+        <div class="item-sub">Chana Dal</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">90</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-10')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-11">
+      <div class="check-badge">&#10003;</div>
+      <img src="saipappu.webp" loading="lazy" decoding="async" width="74" height="74" alt="Sai Pappu">
+      <div class="details">
+        <div class="item-name">Sai Pappu</div>
+        <div class="item-sub">Roasted Chana Dal</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">100</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-11')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-12">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Ragi Pindi">
+      <div class="details">
+        <div class="item-name">Ragi Pindi</div>
+        <div class="item-sub">Finger Millet Flour</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">75</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-12')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-13">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Senaga Pindi">
+      <div class="details">
+        <div class="item-name">Senaga Pindi</div>
+        <div class="item-sub">Gram / Besan Flour</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">100</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-13')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-14">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Corn Flour">
+      <div class="details">
+        <div class="item-name">Corn Flour</div>
+        <div class="item-sub">Corn Starch Flour</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">65</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-14')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-15">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Semiyalu Bambino">
+      <div class="details">
+        <div class="item-name">Semiyalu Bambino</div>
+        <div class="item-sub">Vermicelli</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">95</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-15')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-16">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Bellam">
+      <div class="details">
+        <div class="item-name">Bellam</div>
+        <div class="item-sub">Jaggery</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">73</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-16')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-17">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Yendu Kobbari">
+      <div class="details">
+        <div class="item-name">Yendu Kobbari</div>
+        <div class="item-sub">Dried Coconut</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">195</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-17')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-18">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Yendu Mirapakayalu">
+      <div class="details">
+        <div class="item-name">Yendu Mirapakayalu</div>
+        <div class="item-sub">Dried Red Chillies</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">250</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-18')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-19">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Desi Yendu Mirapakayalu">
+      <div class="details">
+        <div class="item-name">Desi Yendu Mirapakayalu</div>
+        <div class="item-sub">Less Spice Dried Red Chillies</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">410</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-19')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-20">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Dhaniyalu">
+      <div class="details">
+        <div class="item-name">Dhaniyalu</div>
+        <div class="item-sub">Coriander Seeds</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">190</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-20')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-21">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Saggu Biyyam (Sannavi)">
+      <div class="details">
+        <div class="item-name">Saggu Biyyam (Sannavi)</div>
+        <div class="item-sub">Sago / Sabudana</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">85</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-21')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-22">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Tella Senagalu">
+      <div class="details">
+        <div class="item-name">Tella Senagalu</div>
+        <div class="item-sub">White Chickpeas</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">106</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-22')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-23">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Nalla Senagalu">
+      <div class="details">
+        <div class="item-name">Nalla Senagalu</div>
+        <div class="item-sub">Black Chickpeas</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">85</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-23')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-24">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Uppu Senagalu">
+      <div class="details">
+        <div class="item-name">Uppu Senagalu</div>
+        <div class="item-sub">Salt Chickpeas</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">135</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-24')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-25">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Tella Alasandalu">
+      <div class="details">
+        <div class="item-name">Tella Alasandalu</div>
+        <div class="item-sub">White Cowpeas</div>
+        <div class="item-price"><span class="on-demand-tag">&#128274; On Demand</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-25')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-26">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Nalla Alasandalu">
+      <div class="details">
+        <div class="item-name">Nalla Alasandalu</div>
+        <div class="item-sub">Black Cowpeas</div>
+        <div class="item-price"><span class="on-demand-tag">&#128274; On Demand</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-26')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-27">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Batanilu">
+      <div class="details">
+        <div class="item-name">Batanilu</div>
+        <div class="item-sub">Green Peas</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">65</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-27')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-28">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Tella Nuvvulu">
+      <div class="details">
+        <div class="item-name">Tella Nuvvulu</div>
+        <div class="item-sub">White Sesame Seeds</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">202</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-28')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-29">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Nalla Nuvvulu">
+      <div class="details">
+        <div class="item-name">Nalla Nuvvulu</div>
+        <div class="item-sub">Black Sesame Seeds</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">152</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-29')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-30">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Pesallu / Green Pesalu">
+      <div class="details">
+        <div class="item-name">Pesallu / Green Pesalu</div>
+        <div class="item-sub">Whole Moong Beans</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">145</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-30')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-31">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Minumulu / Pottu Minapappu">
+      <div class="details">
+        <div class="item-name">Minumulu / Pottu Minapappu</div>
+        <div class="item-sub">Split Black Gram</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">122</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-31')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-32">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Godumalu">
+      <div class="details">
+        <div class="item-name">Godumalu</div>
+        <div class="item-sub">Wheat</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">60</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-32')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-33">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Jonnalu">
+      <div class="details">
+        <div class="item-name">Jonnalu</div>
+        <div class="item-sub">Sorghum / Jowar</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">55</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-33')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-34">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Ragulu">
+      <div class="details">
+        <div class="item-name">Ragulu</div>
+        <div class="item-sub">Finger Millet / Ragi</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">62</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-34')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-35">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Sajjalu">
+      <div class="details">
+        <div class="item-name">Sajjalu</div>
+        <div class="item-sub">Pearl Millet / Bajra</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">52</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-35')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-36">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Korralu">
+      <div class="details">
+        <div class="item-name">Korralu</div>
+        <div class="item-sub">Foxtail Millet</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">82</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-36')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-37">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Andu Korralu">
+      <div class="details">
+        <div class="item-name">Andu Korralu</div>
+        <div class="item-sub">Barnyard Millet</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">180</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-37')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-38">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Samalu">
+      <div class="details">
+        <div class="item-name">Samalu</div>
+        <div class="item-sub">Little Millet</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">135</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-38')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-39">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Arikelu">
+      <div class="details">
+        <div class="item-name">Arikelu</div>
+        <div class="item-sub">Kodo Millet</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">110</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-39')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-40">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Oodalu">
+      <div class="details">
+        <div class="item-name">Oodalu</div>
+        <div class="item-sub">Browntop Millet</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">110</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-40')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-41">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Quinoa / Keenwah">
+      <div class="details">
+        <div class="item-name">Quinoa / Keenwah</div>
+        <div class="item-sub">Quinoa Seeds</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">155</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-41')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-42">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Varigalu">
+      <div class="details">
+        <div class="item-name">Varigalu</div>
+        <div class="item-sub">Proso Millet</div>
+        <div class="item-price"><span class="on-demand-tag">&#128274; On Demand</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-42')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-43">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Badam Pappu">
+      <div class="details">
+        <div class="item-name">Badam Pappu</div>
+        <div class="item-sub">Almonds</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">920</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-43')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-44">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Badam Pappu (Special)">
+      <div class="details">
+        <div class="item-name">Badam Pappu (Special)</div>
+        <div class="item-sub">Premium Almonds</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">1000</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-44')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-45">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Jeedipappu">
+      <div class="details">
+        <div class="item-name">Jeedipappu</div>
+        <div class="item-sub">Cashews</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">880</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-45')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-46">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Jeedipappu (Special)">
+      <div class="details">
+        <div class="item-name">Jeedipappu (Special)</div>
+        <div class="item-sub">Premium Cashews</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">970</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-46')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-47">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Endu Draksha">
+      <div class="details">
+        <div class="item-name">Endu Draksha</div>
+        <div class="item-sub">Raisins / Dry Grapes</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">480</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-47')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-48">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Pistapappu">
+      <div class="details">
+        <div class="item-name">Pistapappu</div>
+        <div class="item-sub">Pistachios</div>
+        <div class="item-price"><span class="on-demand-tag">&#128274; On Demand</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-48')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-49">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Karjooralu">
+      <div class="details">
+        <div class="item-name">Karjooralu</div>
+        <div class="item-sub">Dates</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">250</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-49')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-50">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Anjeer">
+      <div class="details">
+        <div class="item-name">Anjeer</div>
+        <div class="item-sub">Dried Figs</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">970</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-50')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-51">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Sabja Ginjalu / Chia Seeds">
+      <div class="details">
+        <div class="item-name">Sabja Ginjalu / Chia Seeds</div>
+        <div class="item-sub">Basil / Chia Seeds</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">250</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-51')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-52">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Sabja Ginjalu / Chia Seeds (Special)">
+      <div class="details">
+        <div class="item-name">Sabja Ginjalu / Chia Seeds (Special)</div>
+        <div class="item-sub">Premium Basil / Chia Seeds</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">290</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-52')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-53">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Meal Maker">
+      <div class="details">
+        <div class="item-name">Meal Maker</div>
+        <div class="item-sub">Soya Chunks</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">880</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-53')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-54">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Vanaspati (Dalda)">
+      <div class="details">
+        <div class="item-name">Vanaspati (Dalda)</div>
+        <div class="item-sub">Vegetable Shortening</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">155</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-54')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-55">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Pasupu Kommulu">
+      <div class="details">
+        <div class="item-name">Pasupu Kommulu</div>
+        <div class="item-sub">Turmeric Rhizome</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">200</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-55')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-56">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Aatukulu">
+      <div class="details">
+        <div class="item-name">Aatukulu</div>
+        <div class="item-sub">Poha / Flattened Rice</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">65</span><span class="per-kg"> / kg</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-56')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l1-57">
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Borugulu">
+      <div class="details">
+        <div class="item-name">Borugulu</div>
+        <div class="item-sub">Puffed Rice</div>
+        <div class="item-price"><span class="on-demand-tag">&#128274; On Demand</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l1-57')">
+          <option value="0">-- kg</option>
+          <option value="0.5">ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ kg</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+          <option value="6">6 kg</option>
+          <option value="7">7 kg</option>
+          <option value="8">8 kg</option>
+          <option value="9">9 kg</option>
+          <option value="10">10 kg</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- LIST 2 -->
+  <div class="tab-panel" id="panel-list2">
+    <div class="locked-banner">
+      <span class="lb-icon">&#128274;</span>
+      <div class="lb-title">Order 10 kg from List 1 to unlock</div>
+      <div class="lb-sub">You can browse prices here. Add <span id="lb2-need">10 kg</span> more from List 1 to place orders from this list.</div>
+    </div>
+    <div class="item" id="l2-1">
+      <div class="item-lock-overlay"></div>
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Aashirwad Atta Goduma Pindi">
+      <div class="details">
+        <div class="item-name">Aashirwad Atta Goduma Pindi</div>
+        <div class="item-sub">Wheat Flour ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· 1 kg pack</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">67</span><span class="per-kg"> / pack</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l2-1')">
+          <option value="0">-- packs</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l2-2">
+      <div class="item-lock-overlay"></div>
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Tata Salt">
+      <div class="details">
+        <div class="item-name">Tata Salt</div>
+        <div class="item-sub">Table Salt ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· 1 kg pack</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">30</span><span class="per-kg"> / pack</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l2-2')">
+          <option value="0">-- packs</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l2-3">
+      <div class="item-lock-overlay"></div>
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Kallu Uppu">
+      <div class="details">
+        <div class="item-name">Kallu Uppu</div>
+        <div class="item-sub">Rock Salt ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· 1 kg pack</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">18</span><span class="per-kg"> / pack</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l2-3')">
+          <option value="0">-- packs</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l2-4">
+      <div class="item-lock-overlay"></div>
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="LG Inguva">
+      <div class="details">
+        <div class="item-name">LG Inguva</div>
+        <div class="item-sub">Asafoetida ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· 50 gm pack</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">75</span><span class="per-kg"> / pack</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l2-4')">
+          <option value="0">-- packs</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l2-5">
+      <div class="item-lock-overlay"></div>
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Parachute Coconut Hair Oil">
+      <div class="details">
+        <div class="item-name">Parachute Coconut Hair Oil</div>
+        <div class="item-sub">Hair Oil ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· 275 gm</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">145</span><span class="per-kg"> / pack</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l2-5')">
+          <option value="0">-- packs</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l2-6">
+      <div class="item-lock-overlay"></div>
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Pitamburam">
+      <div class="details">
+        <div class="item-name">Pitamburam</div>
+        <div class="item-sub">Puja Powder ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· 175 gm</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">40</span><span class="per-kg"> / pack</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l2-6')">
+          <option value="0">-- packs</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l2-7">
+      <div class="item-lock-overlay"></div>
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Puja Nuvvula Nuna">
+      <div class="details">
+        <div class="item-name">Puja Nuvvula Nuna</div>
+        <div class="item-sub">Sesame Oil ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· 800 ml</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">120</span><span class="per-kg"> / pack</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l2-7')">
+          <option value="0">-- packs</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l2-8">
+      <div class="item-lock-overlay"></div>
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Vim / EXO Soaps">
+      <div class="details">
+        <div class="item-name">Vim / EXO Soaps</div>
+        <div class="item-sub">Dish Wash ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· 5 @ &#8377;10 each</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">49</span><span class="per-kg"> / pack</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l2-8')">
+          <option value="0">-- packs</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l2-9">
+      <div class="item-lock-overlay"></div>
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Boost">
+      <div class="details">
+        <div class="item-name">Boost</div>
+        <div class="item-sub">Health Drink ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· 10 @ &#8377;5 each</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">49</span><span class="per-kg"> / pack</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l2-9')">
+          <option value="0">-- packs</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l2-10">
+      <div class="item-lock-overlay"></div>
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Horlicks">
+      <div class="details">
+        <div class="item-name">Horlicks</div>
+        <div class="item-sub">Health Drink ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· 10 @ &#8377;5 each</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">49</span><span class="per-kg"> / pack</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l2-10')">
+          <option value="0">-- packs</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l2-11">
+      <div class="item-lock-overlay"></div>
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Meera Shampoo">
+      <div class="details">
+        <div class="item-name">Meera Shampoo</div>
+        <div class="item-sub">20 sachets @ &#8377;2 each</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">39</span><span class="per-kg"> / pack</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l2-11')">
+          <option value="0">-- packs</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l2-12">
+      <div class="item-lock-overlay"></div>
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Clinic Plus Shampoo">
+      <div class="details">
+        <div class="item-name">Clinic Plus Shampoo</div>
+        <div class="item-sub">20 sachets @ &#8377;2 each</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">39</span><span class="per-kg"> / pack</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l2-12')">
+          <option value="0">-- packs</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l2-13">
+      <div class="item-lock-overlay"></div>
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Comfort Liquid">
+      <div class="details">
+        <div class="item-name">Comfort Liquid</div>
+        <div class="item-sub">Fabric Softener ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· 10 @ &#8377;4 each</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">39</span><span class="per-kg"> / pack</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l2-13')">
+          <option value="0">-- packs</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l2-14">
+      <div class="item-lock-overlay"></div>
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Sun Rise Coffee Powder">
+      <div class="details">
+        <div class="item-name">Sun Rise Coffee Powder</div>
+        <div class="item-sub">12 sachets @ &#8377;2 each</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">23</span><span class="per-kg"> / pack</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l2-14')">
+          <option value="0">-- packs</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l2-15">
+      <div class="item-lock-overlay"></div>
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="3 Roses Tea Powder">
+      <div class="details">
+        <div class="item-name">3 Roses Tea Powder</div>
+        <div class="item-sub">250 gm pack</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">215</span><span class="per-kg"> / pack</span></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l2-15')">
+          <option value="0">-- packs</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- LIST 3 -->
+  <div class="tab-panel" id="panel-list3">
+    <div class="locked-banner">
+      <span class="lb-icon">&#128274;</span>
+      <div class="lb-title">Order 10 kg from List 1 to unlock</div>
+      <div class="lb-sub">You can browse prices here. Add <span id="lb3-need">10 kg</span> more from List 1 to place orders from this list.</div>
+    </div>
+    <div class="item" id="l3-1">
+      <div class="item-lock-overlay"></div>
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Freedom SunFlower Oil">
+      <div class="details">
+        <div class="item-name">Freedom SunFlower Oil</div>
+        <div class="item-sub">1 Litre packet</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">183</span><span class="per-kg"> / pkt</span></div>
+        <div class="price-chips"><div class="price-chip">2 pkt: <span>&#8377;362</span></div><div class="price-chip">3 pkt: <span>&#8377;537</span></div><div class="price-chip">4 pkt: <span>&#8377;712</span></div><div class="price-chip">5 pkt: <span>&#8377;885</span></div></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l3-1')">
+          <option value="0">-- pkts</option>
+          <option value="1">1 pkt</option>
+          <option value="2">2 pkt</option>
+          <option value="3">3 pkt</option>
+          <option value="4">4 pkt</option>
+          <option value="5">5 pkt</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l3-2">
+      <div class="item-lock-overlay"></div>
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Freedom Rice Bran Oil">
+      <div class="details">
+        <div class="item-name">Freedom Rice Bran Oil</div>
+        <div class="item-sub">1 Litre packet</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">175</span><span class="per-kg"> / pkt</span></div>
+        <div class="price-chips"><div class="price-chip">2 pkt: <span>&#8377;346</span></div><div class="price-chip">3 pkt: <span>&#8377;513</span></div><div class="price-chip">4 pkt: <span>&#8377;680</span></div><div class="price-chip">5 pkt: <span>&#8377;845</span></div></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l3-2')">
+          <option value="0">-- pkts</option>
+          <option value="1">1 pkt</option>
+          <option value="2">2 pkt</option>
+          <option value="3">3 pkt</option>
+          <option value="4">4 pkt</option>
+          <option value="5">5 pkt</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l3-3">
+      <div class="item-lock-overlay"></div>
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Ruchi Gold Palm Oil Big">
+      <div class="details">
+        <div class="item-name">Ruchi Gold Palm Oil Big</div>
+        <div class="item-sub">850 ml packet</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">150</span><span class="per-kg"> / pkt</span></div>
+        <div class="price-chips"><div class="price-chip">2 pkt: <span>&#8377;296</span></div><div class="price-chip">3 pkt: <span>&#8377;438</span></div><div class="price-chip">4 pkt: <span>&#8377;580</span></div><div class="price-chip">5 pkt: <span>&#8377;720</span></div></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l3-3')">
+          <option value="0">-- pkts</option>
+          <option value="1">1 pkt</option>
+          <option value="2">2 pkt</option>
+          <option value="3">3 pkt</option>
+          <option value="4">4 pkt</option>
+          <option value="5">5 pkt</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l3-4">
+      <div class="item-lock-overlay"></div>
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Onions">
+      <div class="details">
+        <div class="item-name">Onions</div>
+        <div class="item-sub">Fresh Ullipayalu</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">35</span><span class="per-kg"> / kg</span></div>
+        <div class="price-chips"><div class="price-chip">2 kg: <span>&#8377;68</span></div><div class="price-chip">3 kg: <span>&#8377;99</span></div><div class="price-chip">4 kg: <span>&#8377;128</span></div><div class="price-chip">5 kg: <span>&#8377;150</span></div></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l3-4')">
+          <option value="0">-- kgs</option>
+          <option value="1">1 kg</option>
+          <option value="2">2 kg</option>
+          <option value="3">3 kg</option>
+          <option value="4">4 kg</option>
+          <option value="5">5 kg</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- LIST 4 -->
+  <div class="tab-panel" id="panel-list4">
+    <div class="locked-banner">
+      <span class="lb-icon">&#128274;</span>
+      <div class="lb-title">Order 10 kg from List 1 to unlock</div>
+      <div class="lb-sub">You can browse prices here. Add <span id="lb4-need">10 kg</span> more from List 1 to place orders from this list.</div>
+    </div>
+    <div class="item" id="l4-1">
+      <div class="item-lock-overlay"></div>
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Garam Masala">
+      <div class="details">
+        <div class="item-name">Garam Masala</div>
+        <div class="item-sub">Aachi Brand</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">23</span><span class="per-kg"> / 50g</span></div>
+        <div class="price-chips"><div class="price-chip">100g: <span>&#8377;44</span></div><div class="price-chip">200g: <span>&#8377;85</span></div><div class="price-chip">250g: <span>&#8377;107</span></div></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l4-1')">
+          <option value="0">-- qty</option>
+          <option value="50">50 gm</option>
+          <option value="100">100 gm</option>
+          <option value="200">200 gm</option>
+          <option value="250">250 gm</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l4-2">
+      <div class="item-lock-overlay"></div>
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Chicken Masala">
+      <div class="details">
+        <div class="item-name">Chicken Masala</div>
+        <div class="item-sub">Spice Blend</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">18</span><span class="per-kg"> / 50g</span></div>
+        <div class="price-chips"><div class="price-chip">100g: <span>&#8377;34</span></div><div class="price-chip">200g: <span>&#8377;65</span></div><div class="price-chip">250g: <span>&#8377;82</span></div></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l4-2')">
+          <option value="0">-- qty</option>
+          <option value="50">50 gm</option>
+          <option value="100">100 gm</option>
+          <option value="200">200 gm</option>
+          <option value="250">250 gm</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l4-3">
+      <div class="item-lock-overlay"></div>
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Chilli Powder / Karam Podi (Aachi)">
+      <div class="details">
+        <div class="item-name">Chilli Powder / Karam Podi (Aachi)</div>
+        <div class="item-sub">Aachi Brand</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">18</span><span class="per-kg"> / 50g</span></div>
+        <div class="price-chips"><div class="price-chip">100g: <span>&#8377;34</span></div><div class="price-chip">200g: <span>&#8377;65</span></div><div class="price-chip">250g: <span>&#8377;82</span></div></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l4-3')">
+          <option value="0">-- qty</option>
+          <option value="50">50 gm</option>
+          <option value="100">100 gm</option>
+          <option value="200">200 gm</option>
+          <option value="250">250 gm</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l4-4">
+      <div class="item-lock-overlay"></div>
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Turmeric Powder / Pasupu Podi (Aachi)">
+      <div class="details">
+        <div class="item-name">Turmeric Powder / Pasupu Podi (Aachi)</div>
+        <div class="item-sub">Aachi Brand</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">14</span><span class="per-kg"> / 50g</span></div>
+        <div class="price-chips"><div class="price-chip">100g: <span>&#8377;26</span></div><div class="price-chip">200g: <span>&#8377;49</span></div><div class="price-chip">250g: <span>&#8377;62</span></div></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l4-4')">
+          <option value="0">-- qty</option>
+          <option value="50">50 gm</option>
+          <option value="100">100 gm</option>
+          <option value="200">200 gm</option>
+          <option value="250">250 gm</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l4-5">
+      <div class="item-lock-overlay"></div>
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Menthulu">
+      <div class="details">
+        <div class="item-name">Menthulu</div>
+        <div class="item-sub">Fenugreek Seeds</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">9</span><span class="per-kg"> / 50g</span></div>
+        <div class="price-chips"><div class="price-chip">100g: <span>&#8377;16</span></div><div class="price-chip">200g: <span>&#8377;29</span></div><div class="price-chip">250g: <span>&#8377;37</span></div></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l4-5')">
+          <option value="0">-- qty</option>
+          <option value="50">50 gm</option>
+          <option value="100">100 gm</option>
+          <option value="200">200 gm</option>
+          <option value="250">250 gm</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l4-6">
+      <div class="item-lock-overlay"></div>
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Aavalu">
+      <div class="details">
+        <div class="item-name">Aavalu</div>
+        <div class="item-sub">Mustard Seeds</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">10</span><span class="per-kg"> / 50g</span></div>
+        <div class="price-chips"><div class="price-chip">100g: <span>&#8377;18</span></div><div class="price-chip">200g: <span>&#8377;33</span></div><div class="price-chip">250g: <span>&#8377;42</span></div></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l4-6')">
+          <option value="0">-- qty</option>
+          <option value="50">50 gm</option>
+          <option value="100">100 gm</option>
+          <option value="200">200 gm</option>
+          <option value="250">250 gm</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l4-7">
+      <div class="item-lock-overlay"></div>
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Jilakara">
+      <div class="details">
+        <div class="item-name">Jilakara</div>
+        <div class="item-sub">Cumin Seeds</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">17</span><span class="per-kg"> / 50g</span></div>
+        <div class="price-chips"><div class="price-chip">100g: <span>&#8377;32</span></div><div class="price-chip">200g: <span>&#8377;61</span></div><div class="price-chip">250g: <span>&#8377;77</span></div></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l4-7')">
+          <option value="0">-- qty</option>
+          <option value="50">50 gm</option>
+          <option value="100">100 gm</option>
+          <option value="200">200 gm</option>
+          <option value="250">250 gm</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l4-8">
+      <div class="item-lock-overlay"></div>
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Miriyalu">
+      <div class="details">
+        <div class="item-name">Miriyalu</div>
+        <div class="item-sub">Black Pepper</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">43</span><span class="per-kg"> / 50g</span></div>
+        <div class="price-chips"><div class="price-chip">100g: <span>&#8377;84</span></div><div class="price-chip">200g: <span>&#8377;165</span></div><div class="price-chip">250g: <span>&#8377;207</span></div></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l4-8')">
+          <option value="0">-- qty</option>
+          <option value="50">50 gm</option>
+          <option value="100">100 gm</option>
+          <option value="200">200 gm</option>
+          <option value="250">250 gm</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l4-9">
+      <div class="item-lock-overlay"></div>
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Pooja Karpuram Billalu">
+      <div class="details">
+        <div class="item-name">Pooja Karpuram Billalu</div>
+        <div class="item-sub">Camphor Tablets</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">52</span><span class="per-kg"> / 50g</span></div>
+        <div class="price-chips"><div class="price-chip">100g: <span>&#8377;102</span></div><div class="price-chip">200g: <span>&#8377;202</span></div><div class="price-chip">250g: <span>&#8377;252</span></div></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l4-9')">
+          <option value="0">-- qty</option>
+          <option value="50">50 gm</option>
+          <option value="100">100 gm</option>
+          <option value="200">200 gm</option>
+          <option value="250">250 gm</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l4-10">
+      <div class="item-lock-overlay"></div>
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Patta / Dalchina Chekka">
+      <div class="details">
+        <div class="item-name">Patta / Dalchina Chekka</div>
+        <div class="item-sub">Cinnamon Sticks</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">20</span><span class="per-kg"> / 50g</span></div>
+        <div class="price-chips"><div class="price-chip">100g: <span>&#8377;37</span></div><div class="price-chip">200g: <span>&#8377;70</span></div><div class="price-chip">250g: <span>&#8377;88</span></div></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l4-10')">
+          <option value="0">-- qty</option>
+          <option value="50">50 gm</option>
+          <option value="100">100 gm</option>
+          <option value="200">200 gm</option>
+          <option value="250">250 gm</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l4-11">
+      <div class="item-lock-overlay"></div>
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Jeedipappu">
+      <div class="details">
+        <div class="item-name">Jeedipappu</div>
+        <div class="item-sub">Cashews - Spice Pack</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">52</span><span class="per-kg"> / 50g</span></div>
+        <div class="price-chips"><div class="price-chip">100g: <span>&#8377;98</span></div><div class="price-chip">200g: <span>&#8377;189</span></div><div class="price-chip">250g: <span>&#8377;236</span></div></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l4-11')">
+          <option value="0">-- qty</option>
+          <option value="50">50 gm</option>
+          <option value="100">100 gm</option>
+          <option value="200">200 gm</option>
+          <option value="250">250 gm</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l4-12">
+      <div class="item-lock-overlay"></div>
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Endu Draksha">
+      <div class="details">
+        <div class="item-name">Endu Draksha</div>
+        <div class="item-sub">Raisins - Spice Pack</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">32</span><span class="per-kg"> / 50g</span></div>
+        <div class="price-chips"><div class="price-chip">100g: <span>&#8377;58</span></div><div class="price-chip">200g: <span>&#8377;109</span></div><div class="price-chip">250g: <span>&#8377;136</span></div></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l4-12')">
+          <option value="0">-- qty</option>
+          <option value="50">50 gm</option>
+          <option value="100">100 gm</option>
+          <option value="200">200 gm</option>
+          <option value="250">250 gm</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l4-13">
+      <div class="item-lock-overlay"></div>
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Lavangalu">
+      <div class="details">
+        <div class="item-name">Lavangalu</div>
+        <div class="item-sub">Cloves</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">58</span><span class="per-kg"> / 50g</span></div>
+        <div class="price-chips"><div class="price-chip">100g: <span>&#8377;105</span></div><div class="price-chip">200g: <span>&#8377;197</span></div><div class="price-chip">250g: <span>&#8377;245</span></div></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l4-13')">
+          <option value="0">-- qty</option>
+          <option value="50">50 gm</option>
+          <option value="100">100 gm</option>
+          <option value="200">200 gm</option>
+          <option value="250">250 gm</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="item" id="l4-14">
+      <div class="item-lock-overlay"></div>
+      <div class="check-badge">&#10003;</div>
+      <img src="sai.webp" loading="lazy" decoding="async" width="74" height="74" alt="Yalakalu">
+      <div class="details">
+        <div class="item-name">Yalakalu</div>
+        <div class="item-sub">Cardamom</div>
+        <div class="item-price"><span class="rupee">&#8377;</span><span class="amount">185</span><span class="per-kg"> / 50g</span></div>
+        <div class="price-chips"><div class="price-chip">100g: <span>&#8377;358</span></div><div class="price-chip">200g: <span>&#8377;701</span></div><div class="price-chip">250g: <span>&#8377;875</span></div></div>
+      </div>
+      <div class="qty-wrapper">
+        <span class="qty-label">Quantity</span>
+        <select class="qty-select" onchange="onQtyChange(event,'l4-14')">
+          <option value="0">-- qty</option>
+          <option value="50">50 gm</option>
+          <option value="100">100 gm</option>
+          <option value="200">200 gm</option>
+          <option value="250">250 gm</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">&#10022; Order Summary</div>
+  <div class="summary-card">
+    <div class="summary-empty" id="summaryEmpty">No items selected yet</div>
+    <div id="summaryCustomer"></div>
+    <div id="summaryRows"></div>
+  </div>
+
+  <button class="btn-whatsapp" id="waBtn" onclick="sendToWhatsApp()">
+    <span style="font-size:18px">&#128172;</span> Place Order on WhatsApp
+  </button>
+  <div class="footer-note">&#10022; Orders confirmed via WhatsApp only &#10022;</div>
+</div>
+
+<script>
+/* ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚Â
+   DATA ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â auto-generated from Google Sheet
+   Last updated: 2026-06-25
+   To update: export sheet as CSV and regenerate
+ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚Â */
+var L1_PRICES = {'l1-1':135,'l1-2':120,'l1-3':150,'l1-4':54,'l1-5':45,'l1-6':54,'l1-7':140,'l1-8':170,'l1-9':112,'l1-10':90,'l1-11':100,'l1-12':75,'l1-13':100,'l1-14':65,'l1-15':95,'l1-16':73,'l1-17':195,'l1-18':250,'l1-19':410,'l1-20':190,'l1-21':85,'l1-22':106,'l1-23':85,'l1-24':135,'l1-25':0,'l1-26':0,'l1-27':65,'l1-28':202,'l1-29':152,'l1-30':145,'l1-31':122,'l1-32':60,'l1-33':55,'l1-34':62,'l1-35':52,'l1-36':82,'l1-37':180,'l1-38':135,'l1-39':110,'l1-40':110,'l1-41':155,'l1-42':0,'l1-43':920,'l1-44':1000,'l1-45':880,'l1-46':970,'l1-47':480,'l1-48':0,'l1-49':250,'l1-50':970,'l1-51':250,'l1-52':290,'l1-53':880,'l1-54':155,'l1-55':200,'l1-56':65,'l1-57':0};
+var L1_HALF_PRICES = {'l1-1':69,'l1-2':61,'l1-3':76,'l1-4':28,'l1-5':24,'l1-6':28,'l1-7':71,'l1-8':86,'l1-9':57,'l1-10':46,'l1-11':51,'l1-12':39,'l1-13':51,'l1-14':34,'l1-15':49,'l1-16':38,'l1-17':99,'l1-18':126,'l1-19':206,'l1-20':96,'l1-21':44,'l1-22':54,'l1-23':44,'l1-24':69,'l1-25':0,'l1-26':0,'l1-27':34,'l1-28':102,'l1-29':77,'l1-30':74,'l1-31':62,'l1-32':31,'l1-33':29,'l1-34':32,'l1-35':27,'l1-36':42,'l1-37':91,'l1-38':69,'l1-39':56,'l1-40':56,'l1-41':79,'l1-42':0,'l1-43':461,'l1-44':501,'l1-45':441,'l1-46':486,'l1-47':241,'l1-48':0,'l1-49':126,'l1-50':486,'l1-51':126,'l1-52':146,'l1-53':441,'l1-54':79,'l1-55':101,'l1-56':34,'l1-57':0};
+var L1_NAMES = {'l1-1':'Kandipappu','l1-2':'Minapappu','l1-3':'Verusenaga Pappu','l1-4':'Sugar','l1-5':'Idly Ravva','l1-6':'Upma Ravva','l1-7':'Tella Gedda','l1-8':'Chintapandu','l1-9':'Pesara Pappu','l1-10':'Pachi Senaga Pappu','l1-11':'Sai Pappu','l1-12':'Ragi Pindi','l1-13':'Senaga Pindi','l1-14':'Corn Flour','l1-15':'Semiyalu Bambino','l1-16':'Bellam','l1-17':'Yendu Kobbari','l1-18':'Yendu Mirapakayalu','l1-19':'Desi Yendu Mirapakayalu','l1-20':'Dhaniyalu','l1-21':'Saggu Biyyam (Sannavi)','l1-22':'Tella Senagalu','l1-23':'Nalla Senagalu','l1-24':'Uppu Senagalu','l1-25':'Tella Alasandalu','l1-26':'Nalla Alasandalu','l1-27':'Batanilu','l1-28':'Tella Nuvvulu','l1-29':'Nalla Nuvvulu','l1-30':'Pesallu / Green Pesalu','l1-31':'Minumulu / Pottu Minapappu','l1-32':'Godumalu','l1-33':'Jonnalu','l1-34':'Ragulu','l1-35':'Sajjalu','l1-36':'Korralu','l1-37':'Andu Korralu','l1-38':'Samalu','l1-39':'Arikelu','l1-40':'Oodalu','l1-41':'Quinoa / Keenwah','l1-42':'Varigalu','l1-43':'Badam Pappu','l1-44':'Badam Pappu (Special)','l1-45':'Jeedipappu','l1-46':'Jeedipappu (Special)','l1-47':'Endu Draksha','l1-48':'Pistapappu','l1-49':'Karjooralu','l1-50':'Anjeer','l1-51':'Sabja Ginjalu / Chia Seeds','l1-52':'Sabja Ginjalu / Chia Seeds (Special)','l1-53':'Meal Maker','l1-54':'Vanaspati (Dalda)','l1-55':'Pasupu Kommulu','l1-56':'Aatukulu','l1-57':'Borugulu'};
+var L1_IDS = ['l1-1','l1-2','l1-3','l1-4','l1-5','l1-6','l1-7','l1-8','l1-9','l1-10','l1-11','l1-12','l1-13','l1-14','l1-15','l1-16','l1-17','l1-18','l1-19','l1-20','l1-21','l1-22','l1-23','l1-24','l1-25','l1-26','l1-27','l1-28','l1-29','l1-30','l1-31','l1-32','l1-33','l1-34','l1-35','l1-36','l1-37','l1-38','l1-39','l1-40','l1-41','l1-42','l1-43','l1-44','l1-45','l1-46','l1-47','l1-48','l1-49','l1-50','l1-51','l1-52','l1-53','l1-54','l1-55','l1-56','l1-57'];
+var L2_PRICES = {'l2-1':67,'l2-2':30,'l2-3':18,'l2-4':75,'l2-5':145,'l2-6':40,'l2-7':120,'l2-8':49,'l2-9':49,'l2-10':49,'l2-11':39,'l2-12':39,'l2-13':39,'l2-14':23,'l2-15':215};
+var L2_NAMES = {'l2-1':'Aashirwad Atta Goduma Pindi','l2-2':'Tata Salt','l2-3':'Kallu Uppu','l2-4':'LG Inguva','l2-5':'Parachute Coconut Hair Oil','l2-6':'Pitamburam','l2-7':'Puja Nuvvula Nuna','l2-8':'Vim / EXO Soaps','l2-9':'Boost','l2-10':'Horlicks','l2-11':'Meera Shampoo','l2-12':'Clinic Plus Shampoo','l2-13':'Comfort Liquid','l2-14':'Sun Rise Coffee Powder','l2-15':'3 Roses Tea Powder'};
+var L2_IDS = ['l2-1','l2-2','l2-3','l2-4','l2-5','l2-6','l2-7','l2-8','l2-9','l2-10','l2-11','l2-12','l2-13','l2-14','l2-15'];
+var L3_TIER_PRICES = {'l3-1':{1:183,2:362,3:537,4:712,5:885},'l3-2':{1:175,2:346,3:513,4:680,5:845},'l3-3':{1:150,2:296,3:438,4:580,5:720},'l3-4':{1:35,2:68,3:99,4:128,5:150}};
+var L3_NAMES = {'l3-1':'Freedom SunFlower Oil','l3-2':'Freedom Rice Bran Oil','l3-3':'Ruchi Gold Palm Oil Big','l3-4':'Onions'};
+var L3_UNITS = {'l3-1':'pkt','l3-2':'pkt','l3-3':'pkt','l3-4':'kg'};
+var L3_IDS = ['l3-1','l3-2','l3-3','l3-4'];
+var L4_TIER_PRICES = {'l4-1':{50:23,100:44,200:85,250:107},'l4-2':{50:18,100:34,200:65,250:82},'l4-3':{50:18,100:34,200:65,250:82},'l4-4':{50:14,100:26,200:49,250:62},'l4-5':{50:9,100:16,200:29,250:37},'l4-6':{50:10,100:18,200:33,250:42},'l4-7':{50:17,100:32,200:61,250:77},'l4-8':{50:43,100:84,200:165,250:207},'l4-9':{50:52,100:102,200:202,250:252},'l4-10':{50:20,100:37,200:70,250:88},'l4-11':{50:52,100:98,200:189,250:236},'l4-12':{50:32,100:58,200:109,250:136},'l4-13':{50:58,100:105,200:197,250:245},'l4-14':{50:185,100:358,200:701,250:875}};
+var L4_NAMES = {'l4-1':'Garam Masala','l4-2':'Chicken Masala','l4-3':'Chilli Powder / Karam Podi (Aachi)','l4-4':'Turmeric Powder / Pasupu Podi (Aachi)','l4-5':'Menthulu','l4-6':'Aavalu','l4-7':'Jilakara','l4-8':'Miriyalu','l4-9':'Pooja Karpuram Billalu','l4-10':'Patta / Dalchina Chekka','l4-11':'Jeedipappu','l4-12':'Endu Draksha','l4-13':'Lavangalu','l4-14':'Yalakalu'};
+var L4_IDS = ['l4-1','l4-2','l4-3','l4-4','l4-5','l4-6','l4-7','l4-8','l4-9','l4-10','l4-11','l4-12','l4-13','l4-14'];
+var ALL_IDS = L1_IDS.concat(L2_IDS).concat(L3_IDS).concat(L4_IDS);
+
+var MIN_L1_KG  = 10;
+var toastTimer = null;
+var listsUnlocked = false;
+var activeTab = 'list1';
+
+function switchTab(tab) {
+  activeTab = tab;
+  ['list1','list2','list3','list4'].forEach(function(t) {
+    document.getElementById('tab-'  + t).classList.remove('active');
+    document.getElementById('panel-' + t).classList.remove('active');
+  });
+  document.getElementById('tab-'  + tab).classList.add('active');
+  document.getElementById('panel-' + tab).classList.add('active');
+  ['list2','list3','list4'].forEach(function(t) {
+    var panel = document.getElementById('panel-' + t);
+    if (!listsUnlocked && t === tab) { panel.classList.add('locked-view'); }
+    else { panel.classList.remove('locked-view'); }
+  });
+}
+
+function filterPhone(input) { input.value = input.value.replace(/[^0-9]/g,''); }
+
+function getList1Kg() {
+  var total = 0;
+  L1_IDS.forEach(function(id) {
+    total += parseFloat(document.getElementById(id).querySelector('select').value) || 0;
+  });
+  return total;
+}
+
+function onQtyChange(e, id) {
+  e.stopPropagation();
+  var isLocked = (L2_IDS.indexOf(id) > -1 || L3_IDS.indexOf(id) > -1 || L4_IDS.indexOf(id) > -1);
+  if (isLocked && !listsUnlocked) {
+    document.getElementById(id).querySelector('select').value = '0';
+    showToast('Order 10 kg from List 1 first to unlock this list');
+    return;
+  }
+  var item = document.getElementById(id);
+  var val  = parseFloat(item.querySelector('select').value);
+  if (val > 0) { item.classList.add('active'); item.classList.remove('error'); }
+  else { item.classList.remove('active','error'); }
+  updateSummary();
+}
+
+function updateUnlockUI(kg) {
+  var pct = Math.min((kg / MIN_L1_KG) * 100, 100);
+  var met = kg >= MIN_L1_KG;
+  listsUnlocked = met;
+  document.getElementById('upBarFill').style.width = pct + '%';
+  document.getElementById('upCount').textContent = kg.toFixed(kg % 1 === 0 ? 0 : 1) + ' / ' + MIN_L1_KG + ' kg';
+  var msgEl = document.getElementById('upMsg');
+  if (met) {
+    msgEl.className = 'up-msg met';
+    msgEl.innerHTML = '&#10003; Minimum 10 kg reached ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â Lists 2, 3 & 4 are now unlocked!';
+  } else {
+    var need = (MIN_L1_KG - kg).toFixed(kg % 1 === 0 ? 0 : 1);
+    msgEl.className = 'up-msg';
+    msgEl.innerHTML = 'Add <span class="em">' + need + ' kg more</span> from List 1 to unlock Lists 2, 3 & 4';
+  }
+  ['list2','list3','list4'].forEach(function(t) {
+    var btn   = document.getElementById('tab-' + t);
+    var panel = document.getElementById('panel-' + t);
+    if (met) { btn.classList.remove('locked'); panel.classList.remove('locked-view'); }
+    else { btn.classList.add('locked'); if (activeTab === t) panel.classList.add('locked-view'); }
+  });
+  var needText = met ? '0 kg' : ((MIN_L1_KG - kg).toFixed(1).replace('.0','') + ' kg');
+  ['lb2-need','lb3-need','lb4-need'].forEach(function(elId) {
+    var el = document.getElementById(elId); if (el) el.textContent = needText;
+  });
+}
+
+function updateSummary() {
+  var name = document.getElementById('customerName').value.trim();
+  var custPhone = document.getElementById('customerPhone').value.trim();
+  var grandTotal = 0, hasAny = false, html = '';
+
+  /* List 1 */
+  var l1html = '', l1has = false;
+  L1_IDS.forEach(function(id) {
+    var qty = parseFloat(document.getElementById(id).querySelector('select').value) || 0;
+    if (qty > 0 && L1_PRICES[id] > 0) {
+      var it = L1_PRICES[id] * qty;
+      grandTotal += it; hasAny = true; l1has = true;
+      l1html += '<div class="summary-row"><span class="s-name">' + L1_NAMES[id] + '</span><span class="s-qty">' + qty + ' kg</span><span class="s-price">&#8377; ' + it.toFixed(0) + '</span></div>';
+    }
+  });
+  if (l1has) html += '<div class="summary-section-label">&#127807; List 1 &mdash; Dry Groceries</div>' + l1html;
+
+  var l1kg = getList1Kg();
+  updateUnlockUI(l1kg);
+
+  /* List 2 */
+  var l2html = '', l2has = false;
+  L2_IDS.forEach(function(id) {
+    var qty = parseInt(document.getElementById(id).querySelector('select').value) || 0;
+    if (qty > 0) {
+      var it = L2_PRICES[id] * qty;
+      grandTotal += it; hasAny = true; l2has = true;
+      l2html += '<div class="summary-row"><span class="s-name">' + L2_NAMES[id] + '</span><span class="s-qty">x' + qty + '</span><span class="s-price">&#8377; ' + it.toFixed(0) + '</span></div>';
+    }
+  });
+  if (l2has) html += '<div class="summary-section-label">&#127981; List 2 &mdash; Branded Packs</div>' + l2html;
+
+  /* List 3 */
+  var l3html = '', l3has = false;
+  L3_IDS.forEach(function(id) {
+    var qty = parseInt(document.getElementById(id).querySelector('select').value) || 0;
+    if (qty > 0) {
+      var it = L3_TIER_PRICES[id][qty] || 0;
+      grandTotal += it; hasAny = true; l3has = true;
+      var unit = L3_UNITS[id] || 'pkt';
+      l3html += '<div class="summary-row"><span class="s-name">' + L3_NAMES[id] + '</span><span class="s-qty">' + qty + ' ' + unit + '</span><span class="s-price">&#8377; ' + it.toFixed(0) + '</span></div>';
+    }
+  });
+  if (l3has) html += '<div class="summary-section-label">&#129659; List 3 &mdash; Oils & Onions</div>' + l3html;
+
+  /* List 4 */
+  var l4html = '', l4has = false;
+  L4_IDS.forEach(function(id) {
+    var grams = parseInt(document.getElementById(id).querySelector('select').value) || 0;
+    if (grams > 0) {
+      var it = L4_TIER_PRICES[id][grams] || 0;
+      grandTotal += it; hasAny = true; l4has = true;
+      l4html += '<div class="summary-row"><span class="s-name">' + L4_NAMES[id] + '</span><span class="s-qty">' + grams + ' gm</span><span class="s-price">&#8377; ' + it.toFixed(0) + '</span></div>';
+    }
+  });
+  if (l4has) html += '<div class="summary-section-label">&#127798; List 4 &mdash; Spices</div>' + l4html;
+
+  var emptyEl = document.getElementById('summaryEmpty');
+  var customerEl = document.getElementById('summaryCustomer');
+  var rowsEl = document.getElementById('summaryRows');
+
+  if (!hasAny) { emptyEl.style.display = 'block'; customerEl.innerHTML = ''; rowsEl.innerHTML = ''; return; }
+  emptyEl.style.display = 'none';
+
+  if (name) {
+    var phoneHtml = custPhone ? '<span style="font-size:11px;color:#b0b0b0;margin-top:3px;display:block;font-family:Montserrat,sans-serif;font-weight:500;">&#128222; ' + custPhone + '</span>' : '';
+    customerEl.innerHTML = '<div class="summary-customer"><div class="cust-icon">&#128100;</div><div class="cust-info"><span class="cust-label">Order for</span><span class="cust-name">' + name + '</span>' + phoneHtml + '</div></div>';
+  } else { customerEl.innerHTML = ''; }
+
+  html += '<div class="summary-total"><span class="t-label">Grand Total</span><span class="t-amount">&#8377; ' + grandTotal.toFixed(0) + '</span></div>';
+  rowsEl.innerHTML = html;
+}
+
+function showToast(msg, type) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast' + (type === 'info' ? ' info' : '');
+  t.classList.add('show');
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(function() { t.classList.remove('show'); }, 3500);
+}
+
+function buildWhatsAppURL(locationText) {
+  var name = document.getElementById('customerName').value.trim();
+  var custPhone = document.getElementById('customerPhone').value.trim();
+  var lines = '', grandTotal = 0, count = 1;
+
+  var hasL1 = false;
+  L1_IDS.forEach(function(id) {
+    var qty = parseFloat(document.getElementById(id).querySelector('select').value) || 0;
+    if (qty > 0 && L1_PRICES[id] > 0) {
+      if (!hasL1) { lines += '--- List 1: Dry Groceries ---%0A'; hasL1 = true; }
+      var it = L1_PRICES[id] * qty;
+      lines += count + '. ' + L1_NAMES[id] + ' - ' + qty + 'kg - Rs.' + it.toFixed(0) + '%0A';
+      grandTotal += it; count++;
+    }
+  });
+
+  var hasL2 = false;
+  L2_IDS.forEach(function(id) {
+    var qty = parseInt(document.getElementById(id).querySelector('select').value) || 0;
+    if (qty > 0) {
+      if (!hasL2) { lines += '--- List 2: Branded Packs ---%0A'; hasL2 = true; }
+      var it = L2_PRICES[id] * qty;
+      lines += count + '. ' + L2_NAMES[id] + ' x' + qty + ' - Rs.' + it.toFixed(0) + '%0A';
+      grandTotal += it; count++;
+    }
+  });
+
+  var hasL3 = false;
+  L3_IDS.forEach(function(id) {
+    var qty = parseInt(document.getElementById(id).querySelector('select').value) || 0;
+    if (qty > 0) {
+      if (!hasL3) { lines += '--- List 3: Oils & Onions ---%0A'; hasL3 = true; }
+      var it = L3_TIER_PRICES[id][qty] || 0;
+      var unit = L3_UNITS[id] || 'pkt';
+      lines += count + '. ' + L3_NAMES[id] + ' - ' + qty + ' ' + unit + ' - Rs.' + it.toFixed(0) + '%0A';
+      grandTotal += it; count++;
+    }
+  });
+
+  var hasL4 = false;
+  L4_IDS.forEach(function(id) {
+    var grams = parseInt(document.getElementById(id).querySelector('select').value) || 0;
+    if (grams > 0) {
+      if (!hasL4) { lines += '--- List 4: Spices ---%0A'; hasL4 = true; }
+      var it = L4_TIER_PRICES[id][grams] || 0;
+      lines += count + '. ' + L4_NAMES[id] + ' - ' + grams + 'gm - Rs.' + it.toFixed(0) + '%0A';
+      grandTotal += it; count++;
+    }
+  });
+
+  var msg = 'Nellore Basket Order%0A'
+    + '----------------------------%0A'
+    + 'Name%3A ' + encodeURIComponent(name) + '%0A'
+    + 'Phone%3A ' + encodeURIComponent(custPhone) + '%0A'
+    + 'Location%3A ' + encodeURIComponent(locationText) + '%0A'
+    + '----------------------------%0A'
+    + lines
+    + '%0A*Total%3A Rs.' + grandTotal.toFixed(0) + '*';
+  return 'https://wa.me/918008970033?text=' + msg;
+}
+
+function sendToWhatsApp() {
+  var name = document.getElementById('customerName').value.trim();
+  var custPhone = document.getElementById('customerPhone').value.trim();
+  if (!name) { showToast('Please enter your Full Name'); document.getElementById('customerName').focus(); return; }
+  if (!custPhone) { showToast('Please enter your Phone Number'); document.getElementById('customerPhone').focus(); return; }
+  if (custPhone.length !== 10 || !/^[6-9][0-9]{9}$/.test(custPhone)) { showToast('Enter a valid 10-digit Indian mobile number'); document.getElementById('customerPhone').focus(); return; }
+  var hasAny = false;
+  ALL_IDS.forEach(function(id) { if (parseFloat(document.getElementById(id).querySelector('select').value) > 0) hasAny = true; });
+  if (!hasAny) { showToast('Please select at least one item'); return; }
+  var l1kg = getList1Kg();
+  if (l1kg < MIN_L1_KG) { showToast('Minimum 10 kg from List 1 required. Add ' + (MIN_L1_KG - l1kg).toFixed(1).replace('.0','') + ' kg more.'); return; }
+  document.getElementById('locationPopup').classList.add('show');
+}
+
+function handleLocationChoice(isHome) {
+  document.getElementById('locationPopup').classList.remove('show');
+  var btn = document.getElementById('waBtn');
+  btn.disabled = true;
+  if (!isHome) { btn.disabled = false; window.location.href = buildWhatsAppURL('Customer not at home - location not shared'); return; }
+  showToast('Getting your location...', 'info');
+  var locationDone = false;
+  function openWhatsApp(locText) {
+    if (locationDone) return; locationDone = true; btn.disabled = false;
+    window.location.href = buildWhatsAppURL(locText);
+  }
+  var fallbackTimer = setTimeout(function() { openWhatsApp('Location timed out'); }, 10000);
+  if (!navigator.geolocation) { clearTimeout(fallbackTimer); openWhatsApp('Location not supported'); return; }
+  navigator.geolocation.getCurrentPosition(
+    function(pos) {
+      clearTimeout(fallbackTimer);
+      var lat = pos.coords.latitude.toFixed(7), lng = pos.coords.longitude.toFixed(7), acc = Math.round(pos.coords.accuracy);
+      openWhatsApp(lat + ', ' + lng + ' (ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â±' + acc + 'm) https://maps.google.com/?q=' + lat + ',' + lng);
+    },
+    function(err) {
+      clearTimeout(fallbackTimer);
+      navigator.geolocation.getCurrentPosition(
+        function(pos2) {
+          var lat2 = pos2.coords.latitude.toFixed(7), lng2 = pos2.coords.longitude.toFixed(7), acc2 = Math.round(pos2.coords.accuracy);
+          openWhatsApp(lat2 + ', ' + lng2 + ' (ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â±' + acc2 + 'm) https://maps.google.com/?q=' + lat2 + ',' + lng2);
+        },
+        function() { openWhatsApp(err.code === 1 ? 'Location permission denied' : 'Location not available'); },
+        { enableHighAccuracy: false, timeout: 5000, maximumAge: 30000 }
+      );
+    },
+    { enableHighAccuracy: true, timeout: 8000, maximumAge: 0 }
+  );
+}
+
+updateUnlockUI(0);
+</script>
+</body>
+</html>
