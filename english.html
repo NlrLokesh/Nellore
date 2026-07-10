@@ -2991,7 +2991,9 @@ function showToast(msg, type) {
   toastTimer = setTimeout(function() { t.classList.remove('show'); }, 3500);
 }
 
-function buildWhatsAppURL(locationText) {
+/* Builds the plain-text order message (real line breaks, not %0A).
+   Used both for the direct WhatsApp link and for the clipboard-copy fallback. */
+function buildOrderText(locationText) {
   var name = document.getElementById('customerName').value.trim();
   var custPhone = document.getElementById('customerPhone').value.trim();
   var lines = '', grandTotal = 0, count = 1;
@@ -3000,9 +3002,9 @@ function buildWhatsAppURL(locationText) {
   L1_IDS.forEach(function(id) {
     var qty = parseFloat(document.getElementById(id).querySelector('select').value) || 0;
     if (qty > 0 && L1_PRICES[id] > 0) {
-      if (!hasL1) { lines += '--- List 1: Dry Groceries ---%0A'; hasL1 = true; }
+      if (!hasL1) { lines += '--- List 1: Dry Groceries ---\n'; hasL1 = true; }
       var it = L1_PRICES[id] * qty;
-      lines += count + '. ' + L1_NAMES[id] + ' - ' + qty + 'kg - Rs.' + it.toFixed(0) + '%0A';
+      lines += count + '. ' + L1_NAMES[id] + ' - ' + qty + 'kg - Rs.' + it.toFixed(0) + '\n';
       grandTotal += it; count++;
     }
   });
@@ -3011,9 +3013,9 @@ function buildWhatsAppURL(locationText) {
   L2_IDS.forEach(function(id) {
     var qty = parseInt(document.getElementById(id).querySelector('select').value) || 0;
     if (qty > 0 && L2_PRICES[id] > 0) {
-      if (!hasL2) { lines += '--- List 2: Branded Packs ---%0A'; hasL2 = true; }
+      if (!hasL2) { lines += '--- List 2: Branded Packs ---\n'; hasL2 = true; }
       var it = L2_PRICES[id] * qty;
-      lines += count + '. ' + L2_NAMES[id] + ' x' + qty + ' - Rs.' + it.toFixed(0) + '%0A';
+      lines += count + '. ' + L2_NAMES[id] + ' x' + qty + ' - Rs.' + it.toFixed(0) + '\n';
       grandTotal += it; count++;
     }
   });
@@ -3024,23 +3026,81 @@ function buildWhatsAppURL(locationText) {
     if (grams > 0) {
       var it = (L3_TIER_PRICES[id] && L3_TIER_PRICES[id][grams]) || 0;
       if (it > 0) {
-        if (!hasL3) { lines += '--- List 3: Spices & Dry Fruits ---%0A'; hasL3 = true; }
+        if (!hasL3) { lines += '--- List 3: Spices & Dry Fruits ---\n'; hasL3 = true; }
         var label = grams >= 1000 ? (grams/1000) + 'kg' : grams + 'gm';
-        lines += count + '. ' + L3_NAMES[id] + ' - ' + label + ' - Rs.' + it.toFixed(0) + '%0A';
+        lines += count + '. ' + L3_NAMES[id] + ' - ' + label + ' - Rs.' + it.toFixed(0) + '\n';
         grandTotal += it; count++;
       }
     }
   });
 
-  var msg = 'Nellore Basket Order%0A'
-    + '----------------------------%0A'
-    + 'Name%3A ' + encodeURIComponent(name) + '%0A'
-    + 'Phone%3A ' + encodeURIComponent(custPhone) + '%0A'
-    + 'Location%3A ' + encodeURIComponent(locationText) + '%0A'
-    + '----------------------------%0A'
+  return 'Nellore Basket Order\n'
+    + '----------------------------\n'
+    + 'Name: ' + name + '\n'
+    + 'Phone: ' + custPhone + '\n'
+    + 'Location: ' + locationText + '\n'
+    + '----------------------------\n'
     + lines
-    + '%0A*Total%3A Rs.' + grandTotal.toFixed(0) + '*';
-  return 'https://wa.me/918008970033?text=' + msg;
+    + '\n*Total: Rs.' + grandTotal.toFixed(0) + '*';
+}
+
+/* Copies text to clipboard, with an execCommand fallback for older/webview browsers.
+   Resolves true/false (never rejects) so callers can always continue. */
+function copyOrderText(text) {
+  return new Promise(function(resolve) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function() { resolve(true); }).catch(function() { resolve(fallbackCopy(text)); });
+    } else {
+      resolve(fallbackCopy(text));
+    }
+  });
+}
+
+function fallbackCopy(text) {
+  try {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed'; ta.style.top = '0'; ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.focus(); ta.select();
+    var ok = document.execCommand('copy');
+    document.body.removeChild(ta);
+    return ok;
+  } catch (e) { return false; }
+}
+
+/* WhatsApp deep-link "text" params get silently truncated by some mobile
+   browsers/OS versions once the message passes a certain length - this is
+   what was cutting List 3 and the Total off on bigger orders. For short
+   orders we still use the instant, single-tap deep link. For longer orders
+   we copy the full order to the clipboard and open WhatsApp with a short
+   note, so the customer just pastes it in - nothing gets cut off. */
+var WA_TEXT_SAFE_LIMIT = 1500;
+
+function openWhatsAppWithOrder(locationText) {
+  var btn = document.getElementById('waBtn');
+  var fullText = buildOrderText(locationText);
+  var encoded = encodeURIComponent(fullText);
+
+  if (encoded.length <= WA_TEXT_SAFE_LIMIT) {
+    btn.disabled = false;
+    window.location.href = 'https://wa.me/918008970033?text=' + encoded;
+    return;
+  }
+
+  copyOrderText(fullText).then(function(copied) {
+    if (copied) {
+      showToast('Order copied! Paste it (long-press \u2192 Paste) into the WhatsApp chat to send.', 'info');
+    } else {
+      showToast('Order too long to auto-fill - please paste it manually in WhatsApp.', 'info');
+    }
+    setTimeout(function() {
+      btn.disabled = false;
+      var shortMsg = encodeURIComponent('Hi Nellore Basket! Sending my order (pasted below) \uD83D\uDC47');
+      window.location.href = 'https://wa.me/918008970033?text=' + shortMsg;
+    }, 1400);
+  });
 }
 
 function sendToWhatsApp() {
@@ -3061,29 +3121,29 @@ function handleLocationChoice(isHome) {
   document.getElementById('locationPopup').classList.remove('show');
   var btn = document.getElementById('waBtn');
   btn.disabled = true;
-  if (!isHome) { btn.disabled = false; window.location.href = buildWhatsAppURL('Customer not at home - location not shared'); return; }
+  if (!isHome) { openWhatsAppWithOrder('Customer not at home - location not shared'); return; }
   showToast('Getting your location...', 'info');
   var locationDone = false;
-  function openWhatsApp(locText) {
-    if (locationDone) return; locationDone = true; btn.disabled = false;
-    window.location.href = buildWhatsAppURL(locText);
+  function finalize(locText) {
+    if (locationDone) return; locationDone = true;
+    openWhatsAppWithOrder(locText);
   }
-  var fallbackTimer = setTimeout(function() { openWhatsApp('Location timed out'); }, 10000);
-  if (!navigator.geolocation) { clearTimeout(fallbackTimer); openWhatsApp('Location not supported'); return; }
+  var fallbackTimer = setTimeout(function() { finalize('Location timed out'); }, 10000);
+  if (!navigator.geolocation) { clearTimeout(fallbackTimer); finalize('Location not supported'); return; }
   navigator.geolocation.getCurrentPosition(
     function(pos) {
       clearTimeout(fallbackTimer);
       var lat = pos.coords.latitude.toFixed(7), lng = pos.coords.longitude.toFixed(7), acc = Math.round(pos.coords.accuracy);
-      openWhatsApp(lat + ', ' + lng + ' (\u00B1' + acc + 'm) https://maps.google.com/?q=' + lat + ',' + lng);
+      finalize(lat + ', ' + lng + ' (\u00B1' + acc + 'm) https://maps.google.com/?q=' + lat + ',' + lng);
     },
     function(err) {
       clearTimeout(fallbackTimer);
       navigator.geolocation.getCurrentPosition(
         function(pos2) {
           var lat2 = pos2.coords.latitude.toFixed(7), lng2 = pos2.coords.longitude.toFixed(7), acc2 = Math.round(pos2.coords.accuracy);
-          openWhatsApp(lat2 + ', ' + lng2 + ' (\u00B1' + acc2 + 'm) https://maps.google.com/?q=' + lat2 + ',' + lng2);
+          finalize(lat2 + ', ' + lng2 + ' (\u00B1' + acc2 + 'm) https://maps.google.com/?q=' + lat2 + ',' + lng2);
         },
-        function() { openWhatsApp(err.code === 1 ? 'Location permission denied' : 'Location not available'); },
+        function() { finalize(err.code === 1 ? 'Location permission denied' : 'Location not available'); },
         { enableHighAccuracy: false, timeout: 5000, maximumAge: 30000 }
       );
     },
