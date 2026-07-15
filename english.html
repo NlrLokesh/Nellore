@@ -596,16 +596,16 @@ function showToast(msg, type) {
 function buildWhatsAppURL(locationText) {
   var name = document.getElementById('customerName').value.trim();
   var custPhone = document.getElementById('customerPhone').value.trim();
-  var lines = '', grandTotal = 0, count = 1;
+  var lines = [], grandTotal = 0, count = 1;
 
   var hasL1 = false;
   LIST1.forEach(function(row){
     var id=row[0], name1=row[1], half=row[3], full=row[4];
     var qty = parseFloat(document.getElementById(id).querySelector('select').value) || 0;
     if (qty > 0) {
-      if (!hasL1) { lines += '--- List 1: Dry Groceries ---%0A'; hasL1 = true; }
+      if (!hasL1) { lines.push('--- List 1: Dry Groceries ---'); hasL1 = true; }
       var it = (qty === 0.5) ? half : full * qty;
-      lines += count + '. ' + name1 + ' - ' + qty + 'kg - Rs.' + it.toFixed(0) + '%0A';
+      lines.push(count + '. ' + name1 + ' - ' + qty + 'kg - Rs.' + it.toFixed(0));
       grandTotal += it; count++;
     }
   });
@@ -615,9 +615,9 @@ function buildWhatsAppURL(locationText) {
     var id=row[0], name2=row[1], price=row[3];
     var qty = parseInt(document.getElementById(id).querySelector('select').value) || 0;
     if (qty > 0) {
-      if (!hasL2) { lines += '--- List 2: Branded Packs ---%0A'; hasL2 = true; }
+      if (!hasL2) { lines.push('--- List 2: Branded Packs ---'); hasL2 = true; }
       var it = price * qty;
-      lines += count + '. ' + name2 + ' x' + qty + ' - Rs.' + it.toFixed(0) + '%0A';
+      lines.push(count + '. ' + name2 + ' x' + qty + ' - Rs.' + it.toFixed(0));
       grandTotal += it; count++;
     }
   });
@@ -627,21 +627,29 @@ function buildWhatsAppURL(locationText) {
     var id=row[0], name3=row[1], tiers=row[3];
     var grams = parseInt(document.getElementById(id).querySelector('select').value) || 0;
     if (grams > 0) {
-      if (!hasL3) { lines += '--- List 3: Spices & Dry Fruits ---%0A'; hasL3 = true; }
+      if (!hasL3) { lines.push('--- List 3: Spices and Dry Fruits ---'); hasL3 = true; }
       var it = tiers[grams] || 0;
-      lines += count + '. ' + name3 + ' - ' + TIER_LABELS[grams] + ' - Rs.' + it.toFixed(0) + '%0A';
+      lines.push(count + '. ' + name3 + ' - ' + TIER_LABELS[grams] + ' - Rs.' + it.toFixed(0));
       grandTotal += it; count++;
     }
   });
 
-  var msg = 'Nellore Basket Order%0A'
-    + '----------------------------%0A'
-    + 'Name%3A ' + encodeURIComponent(name) + '%0A'
-    + 'Phone%3A ' + encodeURIComponent(custPhone) + '%0A'
-    + 'Location%3A ' + encodeURIComponent(locationText) + '%0A'
-    + '----------------------------%0A'
-    + lines
-    + '%0A*Total%3A Rs.' + grandTotal.toFixed(0) + '*';
+  var parts = [
+    'Nellore Basket Order',
+    '----------------------------',
+    'Name: ' + name,
+    'Phone: ' + custPhone,
+    'Location: ' + locationText,
+    '----------------------------'
+  ].concat(lines).concat([
+    '',
+    '*Total: Rs.' + grandTotal.toFixed(0) + '*'
+  ]);
+
+  // Single encodeURIComponent pass at the end: safely escapes EVERY
+  // special character (&, /, ', etc.) so nothing can ever break or
+  // truncate the wa.me query string, no matter what item names contain.
+  var msg = encodeURIComponent(parts.join('\n'));
   return 'https://wa.me/918008970033?text=' + msg;
 }
 
